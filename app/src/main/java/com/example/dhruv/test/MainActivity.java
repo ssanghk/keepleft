@@ -144,7 +144,8 @@ public class MainActivity extends Activity implements CvCameraViewListener2,OnTo
             // generate gray scale and blur
             Mat gray = new Mat();
             Imgproc.cvtColor(rgba, gray, Imgproc.COLOR_BGR2GRAY);
-            Imgproc.blur(gray, gray, new Size(3, 3));
+            //Imgproc.blur(gray, gray, new Size(3, 3));
+            Imgproc.GaussianBlur(gray, gray, new Size(3, 3), 0);
 
             // detect the edges
             Mat edges = new Mat();
