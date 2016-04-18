@@ -139,7 +139,7 @@ public class MainActivity extends Activity implements CvCameraViewListener2,OnTo
 
         Mat rgba = inputFrame.rgba();
 
-
+        //did u change please change
 
             // generate gray scale and blur
             Mat gray = new Mat();
