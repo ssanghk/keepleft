@@ -139,18 +139,21 @@ public class MainActivity extends Activity implements CvCameraViewListener2,OnTo
 
         Mat rgba = inputFrame.rgba();
 
-        //did u change please change
-
             // generate gray scale and blur
             Mat gray = new Mat();
             Imgproc.cvtColor(rgba, gray, Imgproc.COLOR_BGR2GRAY);
             //Imgproc.blur(gray, gray, new Size(3, 3));
-            Imgproc.GaussianBlur(gray, gray, new Size(3, 3), 0);
+            Imgproc.GaussianBlur(gray, gray, new Size(5, 5), 0);
+
+            double ret = 0.0;
+            //Imgproc.adaptiveThreshold(gray, gray, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, 11, 2);
+            ret = Imgproc.threshold(gray, gray, 0, 255, Imgproc.THRESH_BINARY+Imgproc.THRESH_OTSU);
+
 
             // detect the edges
             Mat edges = new Mat();
 
-            Imgproc.Canny(gray, edges,40,200);
+            Imgproc.Canny(gray, edges,ret*0.4,ret*1.6);
             gray.release();
 
             int threshold = 20;
@@ -158,8 +161,8 @@ public class MainActivity extends Activity implements CvCameraViewListener2,OnTo
             int lineGap = 20;
             Mat lines = new Mat();
 
-            Imgproc.HoughLinesP(edges, lines, 1, Math.PI / 180, 80,10,50);
-//        edges.release();
+            Imgproc.HoughLinesP(edges, lines, 1, Math.PI / 180, (int)ret,10,50);
+            edges.release();
 
             for (int i = 0; i < lines.rows(); i++) {
                 double[] val = lines.get(i, 0);
